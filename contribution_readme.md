@@ -1,15 +1,15 @@
-# Contribution [#]: [Issue Title]
+# Contribution [2]: [[Issue Title](https://github.com/ESCOMP/CTSM/issues/3693#top)]
 
-**Contribution Number:** [1 / 2 / 3]  
-**Student:** [Your Name]  
-**Issue:** [GitHub issue link]  
-**Status:** [Phase I / Phase II / Phase III / Phase IV] [In Progress / Complete]
+**Contribution Number:** [2]  
+**Student:** Clayton Williams  
+**Issue:** https://github.com/ESCOMP/CTSM/issues/3693  
+**Status:** [Phase I]
 
 ---
 
 ## Why I Chose This Issue
 
-[1-2 paragraphs explaining why this issue interests you, how it matches your skills/learning goals, what you hope to learn]
+While Fortran is new to me I was reading through the code and it looks a lot like Progress which I have some experience with from work. I think this will be a good issue for me to try something a little bit more challenging and try learning something new.
 
 ---
 
@@ -17,19 +17,19 @@
 
 ### Problem Description
 
-[In your own words, what's broken or missing?]
+The issue asks to refactor duplicated "move excess soil water upward" logic that currently appears in three places (twice in SoilHydrologyMod.F90, once in SoilWaterMovementMod.F90) into a single shared function. The code checks each soil layer for oversaturation and, if found, shifts the excess water up one layer (or off as runoff if it's the top layer). It's tagged as a code-health cleanup, must remain bit-for-bit identical to current behavior, and is labeled "good first issue" / "size: small," though it's unassigned with no urgent milestone.
 
 ### Expected Behavior
 
-[What should happen?]
+use 1 module to perform the repetitive task
 
 ### Current Behavior
 
-[What actually happens?]
+seperate functions to perform the same task
 
 ### Affected Components
 
-[Which parts of the codebase are involved?]
+SoilHydrologyMod.F90, SoilWaterMovementMod.F90
 
 ---
 
