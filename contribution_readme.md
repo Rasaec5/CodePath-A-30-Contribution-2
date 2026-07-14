@@ -2,14 +2,14 @@
 
 **Contribution Number:** [2]  
 **Student:** Clayton Williams  
-**Issue:** https://github.com/ESCOMP/CTSM/issues/3693  
+**Issue:** [https://github.com/ESCOMP/CTSM/issues/3693 ](https://github.com/nvaccess/nvda/issues/20478) 
 **Status:** [Phase I]
 
 ---
 
 ## Why I Chose This Issue
 
-While Fortran is new to me I was reading through the code and it looks a lot like Progress which I have some experience with from work. I think this will be a good issue for me to try something a little bit more challenging and try learning something new.
+I am familiar with python which is the language for this progect. More importantly I really like that this project is to help the visually impared and am excited to add my own aid.
 
 ---
 
@@ -17,19 +17,23 @@ While Fortran is new to me I was reading through the code and it looks a lot lik
 
 ### Problem Description
 
-The issue asks to refactor duplicated "move excess soil water upward" logic that currently appears in three places (twice in SoilHydrologyMod.F90, once in SoilWaterMovementMod.F90) into a single shared function. The code checks each soil layer for oversaturation and, if found, shifts the excess water up one layer (or off as runoff if it's the top layer). It's tagged as a code-health cleanup, must remain bit-for-bit identical to current behavior, and is labeled "good first issue" / "size: small," though it's unassigned with no urgent milestone.
+ This is a feature request to raise the maximum value allowed for the "Maximum number of characters on one line" setting in NVDA's Browse Mode options. Currently the setting (virtualBuffers.maxLineLength, default 100) appears to be capped around 250 in the settings dialog, but with screen-layout navigation on, paragraphs regularly exceed that, causing text to be split awkwardly. It's related to issue #11717, which notes that hard line-splitting can even break announcements mid-phrase (e.g. splitting a single link's text into two announcements). Labeled "good first issue," "p4" priority, triaged, unassigned.
 
 ### Expected Behavior
 
-use 1 module to perform the repetitive task
+be able to adjust the words per line to any amount
 
 ### Current Behavior
 
-seperate functions to perform the same task
+hits a maximum 
 
 ### Affected Components
 
-SoilHydrologyMod.F90, SoilWaterMovementMod.F90
+source/config/configSpec.py — defines virtualBuffers.maxLineLength = integer(default=100), the config value itself.
+
+Browse Mode settings panel (in source/gui/settingsDialogs.py or a related GUI module) — hosts the actual SpinCtrl/numeric control that imposes the practical 250 ceiling in the UI. I wasn't able to pin down the exact class/line for this one; the file is large and my fetches kept getting truncated before reaching it.
+
+source/browseMode.py — where maxLineLength is actually consumed to decide where to break lines during screen-layout navigation; this is the runtime behavior the setting controls.
 
 ---
 
