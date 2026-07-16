@@ -2,8 +2,8 @@
 
 **Contribution Number:** [2]  
 **Student:** Clayton Williams  
-**Issue:** [https://github.com/ESCOMP/CTSM/issues/3693 ](https://github.com/nvaccess/nvda/issues/20478) 
-**Status:** [Phase I]
+**Issue:** [https://github.com/nvaccess/nvda/issues/20478]
+**Status:** [Phase II]
 
 ---
 
@@ -45,15 +45,17 @@ source/browseMode.py — where maxLineLength is actually consumed to decide wher
 
 ### Steps to Reproduce
 
-1. [Step 1]
-2. [Step 2]
-3. [Observed result]
+1. Install NVDA (any recent release, e.g. 2024.x or later).
+2. Open NVDA Settings → Browse Mode.
+3. Locate the "Maximum number of characters on one line" spin control.
+4. Confirm the spinner does not allow a value greater than 250.
+5. Open a web page in a browser (e.g. Chrome or Firefox) with browse mode active and screen layout enabled.
+6. Navigate to a paragraph whose text exceeds 250 characters (many standard news articles or Wikipedia paragraphs qualify).
+7. Press the Down arrow to read line by line. Notice NVDA splits the paragraph at the 250-character boundary, forcing an extra navigation step to hear the remainder, even when the user would prefer a higher limit.
 
 ### Reproduction Evidence
-
-- **Commit showing reproduction:** [Link to commit in your fork]
-- **Screenshots/logs:** [If applicable]
-- **My findings:** [What you discovered during reproduction]
+- https://github.com/Rasaec5/nvda
+- **My findings:** My findings: The maxLineLength setting in config/configSpec.py has no explicit upper bound (integer(default=100)), so the 250-character cap is enforced solely in the GUI spinner inside source/gui/settingsPanels.py. When using browse mode with screen layout on, paragraphs longer than 250 characters are split at that boundary regardless of content — the split does not respect word or sentence boundaries. Raising the spinner's max argument (e.g. to 10000) is the complete fix; no config schema migration is needed since the config validator already accepts any integer value.
 
 ---
 
@@ -61,13 +63,16 @@ source/browseMode.py — where maxLineLength is actually consumed to decide wher
 
 ### Analysis
 
-[Your analysis of the root cause - what's causing the issue?]
+The root cause is the original code didn't forsee needing to be able to render more characters per line. There was never a reason to limit this but the original coder didn't have a reason not to do so either.
 
 ### Proposed Solution
 
 [High-level description of your fix approach]
 
 ### Implementation Plan
+- In source/gui/settingsPanels.py, locate the wx.SpinCtrl (or equivalent nvdaControls widget) that binds to config.conf["virtualBuffers"]["maxLineLength"] and increase its max argument from 250 to a larger value — 10000 is a reasonable upper bound that matches what NVDA's config validator can already store (the configSpec.py entry has no explicit max).
+- No change to configSpec.py is needed because maxLineLength = integer(default=100) already has no upper bound enforced there.
+- Add a brief entry to user_docs/en/changes.md (under the next release heading) noting the increased limit.
 
 Using UMPIRE framework (adapted):
 
